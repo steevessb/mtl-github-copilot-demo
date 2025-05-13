@@ -1,0 +1,21 @@
+# azure-pipelines.yml
+# Azure DevOps Pipeline for running Pester tests
+# Quality Engineer: Adjust pool, paths, and reporting as needed
+trigger:
+  - main
+pool:
+  vmImage: 'windows-latest'
+steps:
+  - task: PowerShell@2
+    displayName: 'Run Pester Tests'
+    inputs:
+      targetType: 'inline'
+      script: |
+        Install-Module -Name Pester -Force -SkipPublisherCheck
+        Invoke-Pester -Path ./src -OutputFormat NUnitXml -OutputFile TestResults.xml
+  - task: PublishTestResults@2
+    inputs:
+      testResultsFormat: 'NUnit'
+      testResultsFiles: '**/TestResults.xml'
+      failTaskOnFailedTests: true
+# Add steps for Xray Jira or other reporting as needed

@@ -1,0 +1,14 @@
+ARCHITECTURE & SLIDE CONTENT SUMMARY
+
+1. Data-driven Pester tests using arrays/hashtables for fixtures
+2. Centralized Azure queries in DiscoveryPhase.ps1 (BeforeDiscovery event)
+3. Fixtures compare expected vs actual cloud state at runtime
+4. Use AI (Copilot) to generate fixtures and assertion functions
+5. Reporting: Console, Azure DevOps, Xray Jira
+6. BDD-style (Describe/It) for test organization
+7. Sprint 0 for POC/spikes, iterate with BDD
+8. Link Jira issues to test plans, 1 execution per story/issue
+9. Do not create bug issues for all test failures—wait for sprint completion
+10. Avoid code repetition, use Git for test code
+
+Use this file as a reference for new slides or presentations.

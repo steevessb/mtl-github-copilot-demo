@@ -1,0 +1,9 @@
+# Ignore PowerShell/VSCode/Node modules
+*.ps1~
+*.psm1~
+*.log
+node_modules/
+.vscode/
+.env
+*.user
+*.DS_Store
