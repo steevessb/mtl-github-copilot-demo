@@ -164,6 +164,50 @@ app.get('/api/results/:id', (req, res) => {
     res.json(reportData);
 });
 
+// Helper function to extract meaningful test names
+function extractTestName(fullName, attrs) {
+    if (!fullName) return 'Unnamed Test';
+    
+    // First try to get the description attribute directly
+    // This is more reliable than parsing the name
+    if (attrs && attrs.description) {
+        return attrs.description;
+    }
+    
+    // Look for common test name patterns
+    if (fullName.includes('should have') || 
+        fullName.includes('should be') || 
+        fullName.includes('should use') ||
+        fullName.includes('should not')) {
+        
+        // For names like "Azure Security Compliance Tests.Web App Security.All Web Apps should have HTTPS-only enabled"
+        // Extract the part after the last dot that contains the should phrase
+        const parts = fullName.split('.');
+        for (let i = parts.length - 1; i >= 0; i--) {
+            if (parts[i].includes('should')) {
+                return parts[i];
+            }
+        }
+    }
+    
+    // If we have a description in the full name like "All Storage Accounts should have minimum TLS 1.2"
+    // Extract it directly using regex
+    const descMatch = fullName.match(/.*\.(All .* should .*)/);
+    if (descMatch && descMatch[1]) {
+        return descMatch[1];
+    }
+    
+    // For names like "Azure Security Compliance Tests.Web App Security.All Web Apps should use minimum TLS 1.2"
+    // Extract the most descriptive part
+    const nameParts = fullName.split('.');
+    if (nameParts.length >= 3) {
+        return nameParts[nameParts.length - 1];
+    }
+    
+    // Fallback: return the original name
+    return fullName;
+}
+
 // Process test results from NUnit XML format
 function processTestResults(xmlData) {
     const testResults = {
@@ -303,11 +347,9 @@ function processTestResults(xmlData) {
                     testResult = 'Failure';
                 } else {
                     testResult = attrs.result || 'Unknown';
-                }
-                
-                // Extract test case data
+                }                // Extract test case data
                 const test = {
-                    name: attrs.name ? attrs.name.split('.').pop() || attrs.name : 'Unnamed Test',
+                    name: extractTestName(attrs.name || 'Unnamed Test', attrs),
                     description: attrs.description || (attrs.name || 'Unnamed Test'),
                     result: testResult,
                     duration: parseFloat(attrs.time) || 0,
@@ -363,10 +405,9 @@ function processTestResults(xmlData) {
                         testResult = 'Failure';
                     } else {
                         testResult = attrs.result || 'Unknown';
-                    }
-                    
+                    }                    
                     const test = {
-                        name: attrs.name ? attrs.name.split('.').pop() || attrs.name : 'Unnamed Test',
+                        name: extractTestName(attrs.name || 'Unnamed Test'),
                         description: attrs.description || (attrs.name || 'Unnamed Test'),
                         result: testResult,
                         duration: parseFloat(attrs.time) || 0,
