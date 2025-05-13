@@ -9,11 +9,13 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <header>
-        <div class="container">
+    <header>        <div class="container">
             <h1><%= report.name %></h1>
             <p>Test run: <%= new Date(report.date).toLocaleString() %></p>
-            <a href="/" class="btn btn-back">← Back to Reports</a>
+            <div style="display: flex; gap: 10px;">
+                <a href="/" class="btn btn-back">← Back to Reports</a>
+                <a href="/consolidated" class="btn btn-primary">View Consolidated Results</a>
+            </div>
         </div>
     </header>
 

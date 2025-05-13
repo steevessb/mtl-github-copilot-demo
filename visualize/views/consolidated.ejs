@@ -1,0 +1,605 @@
+<!-- views/consolidated.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consolidated Test Results - Azure QA Test Visualizer</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Additional styles for consolidated view */
+        .report-container {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background-color: white;
+        }
+        
+        .report-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .report-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        .report-date {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+        
+        .report-summary {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 1rem;
+        }
+        
+        .report-summary .stat {
+            flex: 1;
+            margin: 0 0.5rem;
+            padding: 0.7rem;
+        }
+        
+        .report-summary .stat-value {
+            font-size: 1.5rem;
+        }
+        
+        .overall-summary {
+            background-color: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-color);
+        }
+        
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .master-chart-wrapper {
+            grid-column: 1 / -1;
+            height: 300px;
+        }
+        
+        .test-cases-table {
+            margin-top: 0;
+        }
+        
+        .collapsible-section {
+            margin-top: 1rem;
+        }
+        
+        .collapsible-header {
+            background-color: #f1f3f5;
+            padding: 0.7rem;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .collapsible-content {
+            display: none;
+            padding-top: 1rem;
+        }
+        
+        .collapsible-content.show {
+            display: block;
+        }
+        
+        .expand-icon::after {
+            content: "▼";
+            font-size: 0.8rem;
+        }
+        
+        .collapsed .expand-icon::after {
+            content: "►";
+        }
+        
+        .filter-bar {
+            background-color: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .filter-bar select, .filter-bar input {
+            padding: 0.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            min-width: 150px;
+        }
+        
+        .label-badge {
+            display: inline-block;
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            margin-left: 0.5rem;
+        }
+        
+        .label-badge.passed {
+            background-color: rgba(75, 192, 92, 0.2);
+        }
+        
+        .label-badge.failed {
+            background-color: rgba(255, 99, 132, 0.2);
+        }
+        
+        .label-badge.skipped {
+            background-color: rgba(201, 203, 207, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Consolidated Test Results</h1>
+            <p>All test runs in one place</p>
+            <a href="/" class="btn btn-back">← Back to Reports</a>
+        </div>
+    </header>
+
+    <main class="container">
+        <% if (reports && reports.length > 0) { %>
+            <section class="overall-summary">
+                <h2>Overall Summary</h2>
+                <div class="summary-stats">
+                    <% 
+                        let totalTests = 0;
+                        let totalPassed = 0;
+                        let totalFailed = 0;
+                        let totalSkipped = 0;
+                        
+                        reports.forEach(report => {
+                            totalTests += report.summary.total;
+                            totalPassed += report.summary.passed;
+                            totalFailed += report.summary.failed;
+                            totalSkipped += report.summary.skipped;
+                        });
+                    %>
+                    <div class="stat total">
+                        <span class="stat-value"><%= totalTests %></span>
+                        <span class="stat-label">Total Tests</span>
+                    </div>
+                    <div class="stat passed">
+                        <span class="stat-value"><%= totalPassed %></span>
+                        <span class="stat-label">Passed</span>
+                    </div>
+                    <div class="stat failed">
+                        <span class="stat-value"><%= totalFailed %></span>
+                        <span class="stat-label">Failed</span>
+                    </div>
+                    <div class="stat skipped">
+                        <span class="stat-value"><%= totalSkipped %></span>
+                        <span class="stat-label">Skipped</span>
+                    </div>
+                </div>
+                
+                <div class="charts-section">
+                    <div class="charts-grid">
+                        <div class="chart-wrapper master-chart-wrapper">
+                            <h3>All Test Runs Results</h3>
+                            <canvas id="allRunsChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="filter-section">
+                <div class="filter-bar">
+                    <div>
+                        <label for="globalStatusFilter">Status:</label>
+                        <select id="globalStatusFilter">
+                            <option value="all">All</option>
+                            <option value="Success">Passed</option>
+                            <option value="Failure">Failed</option>
+                            <option value="Skipped">Skipped</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label for="globalCategoryFilter">Category:</label>
+                        <select id="globalCategoryFilter">
+                            <option value="all">All Categories</option>
+                            <% 
+                                // Collect all categories from all reports
+                                const allCategories = new Set();
+                                reports.forEach(report => {
+                                    if (report.categories) {
+                                        Object.keys(report.categories).forEach(category => {
+                                            allCategories.add(category);
+                                        });
+                                    }
+                                });
+                            %>
+                            <% Array.from(allCategories).forEach(category => { %>
+                                <option value="<%= category %>"><%= category %></option>
+                            <% }); %>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label for="dateFilter">Date Range:</label>
+                        <select id="dateFilter">
+                            <option value="all">All Time</option>
+                            <option value="today">Today</option>
+                            <option value="week">This Week</option>
+                            <option value="month">This Month</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label for="searchFilter">Search:</label>
+                        <input type="text" id="searchFilter" placeholder="Search test cases...">
+                    </div>
+                </div>
+            </section>
+
+            <section class="all-test-cases-section">
+                <h2>All Test Cases 
+                    <span class="label-badge passed" id="totalPassedBadge"><%= totalPassed %> passed</span>
+                    <span class="label-badge failed" id="totalFailedBadge"><%= totalFailed %> failed</span>
+                    <span class="label-badge skipped" id="totalSkippedBadge"><%= totalSkipped %> skipped</span>
+                </h2>
+                
+                <table class="test-cases-table" id="allTestCasesTable">
+                    <thead>
+                        <tr>
+                            <th>Test Name</th>
+                            <th>Category</th>
+                            <th>Result</th>
+                            <th>Duration (s)</th>
+                            <th>Test Run</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% reports.forEach(report => { %>
+                            <% report.testCases.forEach(test => { %>
+                                <tr class="test-case <%= test.result ? test.result.toLowerCase() : 'unknown' %>" 
+                                    data-category="<%= test.context && test.context[0] ? test.context[0] : '' %>" 
+                                    data-status="<%= test.result || 'Unknown' %>"
+                                    data-report="<%= report.name %>"
+                                    data-date="<%= new Date(report.date).getTime() %>">
+                                    <td title="<%= test.description %>"><%= test.name %></td>
+                                    <td><%= test.context ? test.context.join(' > ') : '' %></td>
+                                    <td class="result <%= test.result ? test.result.toLowerCase() : 'unknown' %>"><%= test.result || 'Unknown' %></td>
+                                    <td><%= test.duration ? test.duration.toFixed(3) : '0.000' %></td>
+                                    <td><%= report.name %></td>
+                                    <td><%= new Date(report.date).toLocaleString() %></td>
+                                </tr>
+                            <% }); %>
+                        <% }); %>
+                    </tbody>
+                </table>
+            </section>
+            
+            <section class="individual-reports-section">
+                <h2>Individual Test Runs</h2>
+                
+                <% reports.forEach((report, reportIndex) => { %>
+                    <div class="report-container">
+                        <div class="report-header">
+                            <div class="report-title"><%= report.name %></div>
+                            <div class="report-date"><%= new Date(report.date).toLocaleString() %></div>
+                        </div>
+                        
+                        <div class="report-summary">
+                            <div class="stat total">
+                                <span class="stat-value"><%= report.summary.total %></span>
+                                <span class="stat-label">Total</span>
+                            </div>
+                            <div class="stat passed">
+                                <span class="stat-value"><%= report.summary.passed %></span>
+                                <span class="stat-label">Passed</span>
+                            </div>
+                            <div class="stat failed">
+                                <span class="stat-value"><%= report.summary.failed %></span>
+                                <span class="stat-label">Failed</span>
+                            </div>
+                            <div class="stat skipped">
+                                <span class="stat-value"><%= report.summary.skipped %></span>
+                                <span class="stat-label">Skipped</span>
+                            </div>
+                        </div>
+                        
+                        <div class="charts-grid">
+                            <div class="chart-wrapper">
+                                <h3>Test Results</h3>
+                                <canvas id="chart-<%= reportIndex %>"></canvas>
+                            </div>
+                            
+                            <% if (Object.keys(report.categories || {}).length > 0) { %>
+                                <div class="chart-wrapper">
+                                    <h3>Results by Category</h3>
+                                    <canvas id="categoryChart-<%= reportIndex %>"></canvas>
+                                </div>
+                            <% } %>
+                        </div>
+                        
+                        <div class="collapsible-section collapsed">
+                            <div class="collapsible-header">
+                                <span>Test Cases (<%= report.testCases.length %>)</span>
+                                <span class="expand-icon"></span>
+                            </div>
+                            <div class="collapsible-content">
+                                <table class="test-cases-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Test Name</th>
+                                            <th>Category</th>
+                                            <th>Result</th>
+                                            <th>Duration (s)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% report.testCases.forEach(test => { %>
+                                            <tr class="test-case <%= test.result ? test.result.toLowerCase() : 'unknown' %>"
+                                                data-category="<%= test.context && test.context[0] ? test.context[0] : '' %>" 
+                                                data-status="<%= test.result || 'Unknown' %>">
+                                                <td title="<%= test.description %>"><%= test.name %></td>
+                                                <td><%= test.context ? test.context.join(' > ') : '' %></td>
+                                                <td class="result <%= test.result ? test.result.toLowerCase() : 'unknown' %>"><%= test.result || 'Unknown' %></td>
+                                                <td><%= test.duration ? test.duration.toFixed(3) : '0.000' %></td>
+                                            </tr>
+                                        <% }); %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                          <div class="report-actions">
+                            <a href="/report/<%= report.id %>" class="btn btn-view">View Detailed Report</a>
+                            <% if (report.azureUrl) { %>
+                                <a href="<%= report.azureUrl %>" target="_blank" class="btn btn-azure">View in Azure</a>
+                            <% } %>
+                        </div>
+                    </div>
+                <% }); %>
+            </section>
+        <% } else { %>
+            <div class="no-reports">
+                <p>No test reports available. Please run some tests and upload the results first.</p>
+                <a href="/" class="btn btn-primary">Go to Upload</a>
+            </div>
+        <% } %>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; <%= new Date().getFullYear() %> Azure QA Test Visualizer</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Collapsible sections
+            const collapsibles = document.querySelectorAll('.collapsible-section');
+            collapsibles.forEach(section => {
+                const header = section.querySelector('.collapsible-header');
+                const content = section.querySelector('.collapsible-content');
+                
+                header.addEventListener('click', () => {
+                    section.classList.toggle('collapsed');
+                    content.classList.toggle('show');
+                });
+            });
+            
+            <% if (reports && reports.length > 0) { %>
+                // Global filters
+                const globalStatusFilter = document.getElementById('globalStatusFilter');
+                const globalCategoryFilter = document.getElementById('globalCategoryFilter');
+                const dateFilter = document.getElementById('dateFilter');
+                const searchFilter = document.getElementById('searchFilter');
+                const allTestRows = document.querySelectorAll('#allTestCasesTable .test-case');
+                
+                function applyGlobalFilters() {
+                    const statusValue = globalStatusFilter.value;
+                    const categoryValue = globalCategoryFilter.value;
+                    const dateValue = dateFilter.value;
+                    const searchValue = searchFilter.value.toLowerCase();
+                    
+                    let passedCount = 0;
+                    let failedCount = 0;
+                    let skippedCount = 0;
+                    
+                    allTestRows.forEach(row => {
+                        const status = row.getAttribute('data-status');
+                        const category = row.getAttribute('data-category');
+                        const testName = row.cells[0].textContent.toLowerCase();
+                        const rowDate = new Date(parseInt(row.getAttribute('data-date')));
+                        
+                        // Date filter logic
+                        let dateMatch = true;
+                        if (dateValue !== 'all') {
+                            const today = new Date();
+                            const startOfDay = new Date(today.setHours(0, 0, 0, 0));
+                            
+                            if (dateValue === 'today') {
+                                dateMatch = rowDate >= startOfDay;
+                            } else if (dateValue === 'week') {
+                                const startOfWeek = new Date(today);
+                                startOfWeek.setDate(today.getDate() - today.getDay());
+                                startOfWeek.setHours(0, 0, 0, 0);
+                                dateMatch = rowDate >= startOfWeek;
+                            } else if (dateValue === 'month') {
+                                const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+                                dateMatch = rowDate >= startOfMonth;
+                            }
+                        }
+                        
+                        const statusMatch = statusValue === 'all' || status === statusValue;
+                        const categoryMatch = categoryValue === 'all' || category === categoryValue;
+                        const searchMatch = searchValue === '' || testName.includes(searchValue);
+                        
+                        const isVisible = statusMatch && categoryMatch && dateMatch && searchMatch;
+                        
+                        if (isVisible) {
+                            row.style.display = '';
+                            if (status === 'Success') passedCount++;
+                            else if (status === 'Failure') failedCount++;
+                            else if (status === 'Skipped') skippedCount++;
+                        } else {
+                            row.style.display = 'none';
+                        }
+                    });
+                    
+                    // Update badges
+                    document.getElementById('totalPassedBadge').textContent = `${passedCount} passed`;
+                    document.getElementById('totalFailedBadge').textContent = `${failedCount} failed`;
+                    document.getElementById('totalSkippedBadge').textContent = `${skippedCount} skipped`;
+                }
+                
+                globalStatusFilter.addEventListener('change', applyGlobalFilters);
+                globalCategoryFilter.addEventListener('change', applyGlobalFilters);
+                dateFilter.addEventListener('change', applyGlobalFilters);
+                searchFilter.addEventListener('input', applyGlobalFilters);
+                
+                // Master chart for all runs
+                const allRunsCtx = document.getElementById('allRunsChart').getContext('2d');
+                new Chart(allRunsCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: [<% reports.forEach((report, index) => { %>'<%= report.name %>'<%= index < reports.length - 1 ? ',' : '' %><% }); %>],
+                        datasets: [
+                            {
+                                label: 'Passed',
+                                data: [<% reports.forEach((report, index) => { %><%= report.summary.passed %><%= index < reports.length - 1 ? ',' : '' %><% }); %>],
+                                backgroundColor: 'rgba(75, 192, 92, 0.8)',
+                                borderColor: 'rgb(75, 192, 92)',
+                                borderWidth: 1
+                            },
+                            {
+                                label: 'Failed',
+                                data: [<% reports.forEach((report, index) => { %><%= report.summary.failed %><%= index < reports.length - 1 ? ',' : '' %><% }); %>],
+                                backgroundColor: 'rgba(255, 99, 132, 0.8)',
+                                borderColor: 'rgb(255, 99, 132)',
+                                borderWidth: 1
+                            },
+                            {
+                                label: 'Skipped',
+                                data: [<% reports.forEach((report, index) => { %><%= report.summary.skipped %><%= index < reports.length - 1 ? ',' : '' %><% }); %>],
+                                backgroundColor: 'rgba(201, 203, 207, 0.8)',
+                                borderColor: 'rgb(201, 203, 207)',
+                                borderWidth: 1
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: {
+                                stacked: true,
+                            },
+                            y: {
+                                stacked: true
+                            }
+                        }
+                    }
+                });
+                
+                // Individual report charts
+                <% reports.forEach((report, reportIndex) => { %>
+                    // Pie chart for overall results
+                    const ctx<%= reportIndex %> = document.getElementById('chart-<%= reportIndex %>').getContext('2d');
+                    new Chart(ctx<%= reportIndex %>, {
+                        type: 'pie',
+                        data: {
+                            labels: ['Passed', 'Failed', 'Skipped'],
+                            datasets: [{
+                                data: [
+                                    <%= report.summary.passed %>,
+                                    <%= report.summary.failed %>,
+                                    <%= report.summary.skipped %>
+                                ],
+                                backgroundColor: [
+                                    'rgba(75, 192, 92, 0.8)',
+                                    'rgba(255, 99, 132, 0.8)',
+                                    'rgba(201, 203, 207, 0.8)'
+                                ],
+                                borderColor: [
+                                    'rgb(75, 192, 92)',
+                                    'rgb(255, 99, 132)',
+                                    'rgb(201, 203, 207)'
+                                ],
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                legend: {
+                                    position: 'right',
+                                }
+                            }
+                        }
+                    });
+                    
+                    <% if (Object.keys(report.categories || {}).length > 0) { %>
+                    // Bar chart for categories
+                    const categoryCtx<%= reportIndex %> = document.getElementById('categoryChart-<%= reportIndex %>').getContext('2d');
+                    new Chart(categoryCtx<%= reportIndex %>, {
+                        type: 'bar',
+                        data: {
+                            labels: [<% Object.keys(report.categories).forEach((category, index) => { %>'<%= category %>'<%= index < Object.keys(report.categories).length - 1 ? ',' : '' %><% }); %>],
+                            datasets: [
+                                {
+                                    label: 'Passed',
+                                    data: [<% Object.keys(report.categories).forEach((category, index) => { %><%= report.categories[category].passed %><%= index < Object.keys(report.categories).length - 1 ? ',' : '' %><% }); %>],
+                                    backgroundColor: 'rgba(75, 192, 92, 0.8)',
+                                    borderColor: 'rgb(75, 192, 92)',
+                                    borderWidth: 1
+                                },
+                                {
+                                    label: 'Failed',
+                                    data: [<% Object.keys(report.categories).forEach((category, index) => { %><%= report.categories[category].failed %><%= index < Object.keys(report.categories).length - 1 ? ',' : '' %><% }); %>],
+                                    backgroundColor: 'rgba(255, 99, 132, 0.8)',
+                                    borderColor: 'rgb(255, 99, 132)',
+                                    borderWidth: 1
+                                },
+                                {
+                                    label: 'Skipped',
+                                    data: [<% Object.keys(report.categories).forEach((category, index) => { %><%= report.categories[category].skipped %><%= index < Object.keys(report.categories).length - 1 ? ',' : '' %><% }); %>],
+                                    backgroundColor: 'rgba(201, 203, 207, 0.8)',
+                                    borderColor: 'rgb(201, 203, 207)',
+                                    borderWidth: 1
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            scales: {
+                                x: {
+                                    stacked: true,
+                                },
+                                y: {
+                                    stacked: true
+                                }
+                            }
+                        }
+                    });
+                    <% } %>
+                <% }); %>
+            <% } %>
+        });
+    </script>
+</body>
+</html>

@@ -26,10 +26,11 @@
                 </div>
                 <button type="submit" class="btn btn-primary">Upload and Visualize</button>
             </form>
-        </section>
-
-        <section class="reports-section">
+        </section>        <section class="reports-section">
             <h2>Recent Reports</h2>
+            <div class="action-links" style="margin-bottom: 1rem;">
+                <a href="/consolidated" class="btn btn-primary">View Consolidated Results</a>
+            </div>
             <% if (reports && reports.length > 0) { %>
                 <table class="reports-table">
                     <thead>
