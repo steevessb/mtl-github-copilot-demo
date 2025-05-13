@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<test-results xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="nunit_schema_2.5.xsd" name="Pester" total="6" errors="0" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2025-05-13" time="16:32:56">
+  <environment clr-version="Unknown" user-domain="2D" machine-name="5CG3032D8Y" nunit-version="2.5.8.0" platform="Microsoft Windows 11 Enterprise|C:\windows|\Device\Harddisk0\Partition3" os-version="10.0.22621" cwd="C:\Users\steeves.saillant\source\mtl-github-copilot-demo" user="steeves.saillant" />
+  <culture-info current-culture="en-CA" current-uiculture="en-US" />
+  <test-suite type="TestFixture" name="Pester" executed="True" result="Success" success="True" time="0.0473" asserts="0" description="Pester">
+    <results>
+      <test-suite type="TestFixture" name="C:\Users\steeves.saillant\source\mtl-github-copilot-demo\tests\SimpleStorageSimulatorTests.ps1" executed="True" result="Success" success="True" time="0.0473" asserts="0" description="C:\Users\steeves.saillant\source\mtl-github-copilot-demo\tests\SimpleStorageSimulatorTests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="Storage Account Tests with Local Simulator" executed="True" result="Success" success="True" time="0.0146" asserts="0" description="Storage Account Tests with Local Simulator">
+            <results>
+              <test-suite type="TestFixture" name="Storage Account Tests with Local Simulator.Storage Account Validation - Storage 1" executed="True" result="Success" success="True" time="0.0038" asserts="0" description="Storage Account Tests with Local Simulator.Storage Account Validation - Storage 1">
+                <results>
+                  <test-case description="Should have the correct name" name="Storage Account Tests with Local Simulator.Storage Account Validation - Storage 1.Should have the correct name" time="0.0012" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Should be in East US region" name="Storage Account Tests with Local Simulator.Storage Account Validation - Storage 1.Should be in East US region" time="0.001" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Storage Account Tests with Local Simulator.Storage Account Validation - Storage 2" executed="True" result="Success" success="True" time="0.0072" asserts="0" description="Storage Account Tests with Local Simulator.Storage Account Validation - Storage 2">
+                <results>
+                  <test-case description="Should have the correct name" name="Storage Account Tests with Local Simulator.Storage Account Validation - Storage 2.Should have the correct name" time="0.0009" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Should be in Canada East region" name="Storage Account Tests with Local Simulator.Storage Account Validation - Storage 2.Should be in Canada East region" time="0.0009" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Storage Account Tests with Local Simulator.Local Simulator Connection Test" executed="True" result="Success" success="True" time="0.0109" asserts="0" description="Storage Account Tests with Local Simulator.Local Simulator Connection Test">
+                <results>
+                  <test-case description="Should have Azurite connection string set" name="Storage Account Tests with Local Simulator.Local Simulator Connection Test.Should have Azurite connection string set" time="0.001" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Should have Azurite simulator enabled flag set" name="Storage Account Tests with Local Simulator.Local Simulator Connection Test.Should have Azurite simulator enabled flag set" time="0.001" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+    </results>
+  </test-suite>
+</test-results>

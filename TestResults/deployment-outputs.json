@@ -1,26 +1,38 @@
 {
-  "storageAccount2": {
-    "Location": "canadaeast",
-    "Name": "storage2"
+  "storage2Name": {
+    "value": "storage2"
   },
-  "vnet1": {
-    "Location": "eastus",
-    "Name": "vnet1"
+  "vnet1Name": {
+    "value": "vnet1"
   },
-  "keyVault2": {
-    "Location": "canadaeast",
-    "Name": "kv2"
+  "subnet2Name": {
+    "value": "subnet2"
   },
-  "storageAccount1": {
-    "Location": "eastus",
-    "Name": "storage1"
+  "subnet1Name": {
+    "value": "subnet1"
   },
-  "vnet2": {
-    "Location": "canadaeast",
-    "Name": "vnet2"
+  "nsg2Name": {
+    "value": "nsg2"
   },
-  "keyVault1": {
-    "Location": "eastus",
-    "Name": "kv1"
+  "keyVault2Name": {
+    "value": "kv2"
+  },
+  "keyVault1Name": {
+    "value": "kv1"
+  },
+  "privateDns2Name": {
+    "value": "privatedns2.azure.com"
+  },
+  "vnet2Name": {
+    "value": "vnet2"
+  },
+  "storage1Name": {
+    "value": "storage1"
+  },
+  "privateDns1Name": {
+    "value": "privatedns1.azure.com"
+  },
+  "nsg1Name": {
+    "value": "nsg1"
   }
 }

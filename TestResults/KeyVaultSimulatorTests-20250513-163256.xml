@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<test-results xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="nunit_schema_2.5.xsd" name="Pester" total="5" errors="0" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2025-05-13" time="16:32:57">
+  <environment clr-version="Unknown" user-domain="2D" machine-name="5CG3032D8Y" nunit-version="2.5.8.0" platform="Microsoft Windows 11 Enterprise|C:\windows|\Device\Harddisk0\Partition3" os-version="10.0.22621" cwd="C:\Users\steeves.saillant\source\mtl-github-copilot-demo" user="steeves.saillant" />
+  <culture-info current-culture="en-CA" current-uiculture="en-US" />
+  <test-suite type="TestFixture" name="Pester" executed="True" result="Success" success="True" time="0.0444" asserts="0" description="Pester">
+    <results>
+      <test-suite type="TestFixture" name="C:\Users\steeves.saillant\source\mtl-github-copilot-demo\tests\KeyVaultSimulatorTests.ps1" executed="True" result="Success" success="True" time="0.0444" asserts="0" description="C:\Users\steeves.saillant\source\mtl-github-copilot-demo\tests\KeyVaultSimulatorTests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="Key Vault Tests with Local Simulator" executed="True" result="Success" success="True" time="0.0201" asserts="0" description="Key Vault Tests with Local Simulator">
+            <results>
+              <test-suite type="TestFixture" name="Key Vault Tests with Local Simulator.Key Vault 1 Validation" executed="True" result="Success" success="True" time="0.0037" asserts="0" description="Key Vault Tests with Local Simulator.Key Vault 1 Validation">
+                <results>
+                  <test-case description="Should have the correct name" name="Key Vault Tests with Local Simulator.Key Vault 1 Validation.Should have the correct name" time="0.001" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Should be in East US region" name="Key Vault Tests with Local Simulator.Key Vault 1 Validation.Should be in East US region" time="0.0008" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Key Vault Tests with Local Simulator.Key Vault 2 Validation" executed="True" result="Success" success="True" time="0.0066" asserts="0" description="Key Vault Tests with Local Simulator.Key Vault 2 Validation">
+                <results>
+                  <test-case description="Should have the correct name" name="Key Vault Tests with Local Simulator.Key Vault 2 Validation.Should have the correct name" time="0.0008" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Should be in Canada East region" name="Key Vault Tests with Local Simulator.Key Vault 2 Validation.Should be in Canada East region" time="0.0008" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Key Vault Tests with Local Simulator.Key Vault Fixture Validation" executed="True" result="Success" success="True" time="0.0088" asserts="0" description="Key Vault Tests with Local Simulator.Key Vault Fixture Validation">
+                <results>
+                  <test-case description="Should have two key vaults defined" name="Key Vault Tests with Local Simulator.Key Vault Fixture Validation.Should have two key vaults defined" time="0.0008" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+    </results>
+  </test-suite>
+</test-results>

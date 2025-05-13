@@ -72,6 +72,42 @@ app.get('/', (req, res) => {
     });
 });
 
+// Consolidated view route
+app.get('/consolidated', (req, res) => {
+    // Get list of reports from reports directory
+    const reportsDir = path.join(__dirname, 'public', 'reports');
+    
+    // Create directory if it doesn't exist
+    if (!fs.existsSync(reportsDir)) {
+        fs.mkdirSync(reportsDir, { recursive: true });
+    }
+    
+    // Read reports directory
+    fs.readdir(reportsDir, (err, files) => {
+        if (err) {
+            console.error('Error reading reports directory:', err);
+            return res.render('consolidated', { reports: [] });
+        }
+        
+        // Filter for JSON report files
+        const reports = files
+            .filter(file => file.endsWith('.json'))
+            .map(file => {
+                const reportData = JSON.parse(fs.readFileSync(path.join(reportsDir, file), 'utf8'));
+                return {
+                    id: file.replace('.json', ''),
+                    name: reportData.name || file,
+                    date: reportData.date || 'Unknown',
+                    summary: reportData.summary,
+                    categories: reportData.categories,
+                    testCases: reportData.testCases
+                };
+            });
+        
+        res.render('consolidated', { reports });
+    });
+});
+
 // Upload results route
 app.post('/upload', upload.single('testResults'), (req, res) => {
     if (!req.file) {
@@ -118,8 +154,7 @@ app.post('/upload', upload.single('testResults'), (req, res) => {
                         }
                     );
                 }
-                
-                // Check if this is a programmatic upload (API request)
+                  // Check if this is a programmatic upload (API request)
                 // If Accept header includes application/json, return JSON response
                 if (req.headers.accept && req.headers.accept.includes('application/json')) {
                     return res.json({ 
@@ -130,8 +165,8 @@ app.post('/upload', upload.single('testResults'), (req, res) => {
                     });
                 }
                 
-                // If it's a browser upload, redirect to the report page
-                res.redirect(`/report/${reportId}`);
+                // If it's a browser upload, redirect to the consolidated view
+                res.redirect('/consolidated');
             } catch (error) {
                 console.error('Error processing test results:', error);
                 res.status(500).send('Error processing test results');
