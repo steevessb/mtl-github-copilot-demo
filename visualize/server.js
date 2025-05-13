@@ -94,13 +94,6 @@ app.post('/upload', upload.single('testResults'), (req, res) => {
             
             try {                // Process test results
                 const testResults = processTestResults(result);
-                console.log('Processed test results:');
-                console.log('Test Total:', testResults.summary.total);
-                console.log('Test Passed:', testResults.summary.passed);
-                console.log('Test Failed:', testResults.summary.failed);
-                console.log('Test Skipped:', testResults.summary.skipped);
-                console.log('Test Cases found:', testResults.testCases.length);
-                
                 const reportId = `report-${Date.now()}`;
                 const reportPath = path.join(__dirname, 'public', 'reports', `${reportId}.json`);
                 
@@ -185,21 +178,25 @@ function processTestResults(xmlData) {
         categories: {},
         testCases: []
     };
-    
-    // Extract test-suite information from NUnit XML
+      // Extract test-suite information from NUnit XML
     const testSuite = xmlData['test-results']['test-suite'];
+      // Process test summary
+    testResults.name = testSuite && testSuite.$ ? testSuite.$.name || 'Pester Test Results' : 'Pester Test Results';
+      // XML attributes are in the $ property with xml2js parser
+    const testResultsAttr = xmlData['test-results'] && xmlData['test-results'].$ ? xmlData['test-results'].$ : null;
     
-    // Process test summary
-    testResults.name = testSuite.name || 'Pester Test Results';
-    
-    // Directly extract values from the XML attributes    testResults.summary.total = parseInt(xmlData['test-results'].total) || 0;
-    testResults.summary.failed = parseInt(xmlData['test-results'].failures) || 0;
-    testResults.summary.notRun = parseInt(xmlData['test-results']['not-run']) || 0;
-    testResults.summary.inconclusive = parseInt(xmlData['test-results'].inconclusive) || 0;
-    testResults.summary.ignored = parseInt(xmlData['test-results'].ignored) || 0;
-    testResults.summary.invalid = parseInt(xmlData['test-results'].invalid) || 0;
-    testResults.summary.skipped = parseInt(xmlData['test-results'].skipped) || 0;
-    testResults.summary.errors = parseInt(xmlData['test-results'].errors) || 0;
+    // Extract values from the XML attributes if they exist
+    if (testResultsAttr) {
+        testResults.summary.total = parseInt(testResultsAttr.total) || 0;
+        testResults.summary.failed = parseInt(testResultsAttr.failures) || 0;
+        testResults.summary.notRun = parseInt(testResultsAttr['not-run']) || 0;
+        testResults.summary.inconclusive = parseInt(testResultsAttr.inconclusive) || 0;
+        testResults.summary.ignored = parseInt(testResultsAttr.ignored) || 0;
+        testResults.summary.invalid = parseInt(testResultsAttr.invalid) || 0;
+        testResults.summary.skipped = parseInt(testResultsAttr.skipped) || 0;
+        testResults.summary.errors = parseInt(testResultsAttr.errors) || 0;    } else {
+        console.log('WARNING: Could not find test-results attributes in XML');
+    }
     
     // Calculate passed tests - in Pester 9 passed tests = total - failures - not-run - other categories
     // Check if the success attribute is set on test cases
@@ -208,12 +205,13 @@ function processTestResults(xmlData) {
     // Count all successful test cases
     function countSuccessfulTests(obj) {
         if (!obj) return;
-        
-        // Check if this is a test case
+          // Check if this is a test case
         if (obj['test-case']) {
             const testCases = Array.isArray(obj['test-case']) ? obj['test-case'] : [obj['test-case']];
             testCases.forEach(testCase => {
-                if (testCase.success === 'True' || testCase.result === 'Success') {
+                // Check $ property for attributes
+                const attrs = testCase.$ || {};
+                if (attrs.success === 'True' || attrs.result === 'Success') {
                     successCount++;
                 }
             });
@@ -258,11 +256,10 @@ function processTestResults(xmlData) {
     // Process individual test cases
     function processTestSuite(suite, parentContext = []) {
         if (!suite) return;
-        
-        // Skip the root Pester element and file paths
+          // Skip the root Pester element and file paths
         const currentContext = [...parentContext];
-        if (suite.name && suite.name !== 'Pester' && !suite.name.startsWith('C:\\')) {
-            currentContext.push(suite.name);
+        if (suite.$ && suite.$.name && suite.$.name !== 'Pester' && !suite.$.name.startsWith('C:\\')) {
+            currentContext.push(suite.$.name);
         }
         
         // Add category data
@@ -294,24 +291,26 @@ function processTestResults(xmlData) {
             const testCases = Array.isArray(suite['results']['test-case']) 
                 ? suite['results']['test-case'] 
                 : [suite['results']['test-case']];
-            
-            testCases.forEach(testCase => {
+              testCases.forEach(testCase => {
+                // Get attributes from $ property 
+                const attrs = testCase.$ || {};
+                
                 // Determine the test result - use success attribute or result
                 let testResult = 'Unknown';
-                if (testCase.success === 'True') {
+                if (attrs.success === 'True') {
                     testResult = 'Success';
-                } else if (testCase.success === 'False') {
+                } else if (attrs.success === 'False') {
                     testResult = 'Failure';
                 } else {
-                    testResult = testCase.result || 'Unknown';
+                    testResult = attrs.result || 'Unknown';
                 }
                 
                 // Extract test case data
                 const test = {
-                    name: testCase.name ? testCase.name.split('.').pop() || testCase.name : 'Unnamed Test',
-                    description: testCase.description || (testCase.name || 'Unnamed Test'),
+                    name: attrs.name ? attrs.name.split('.').pop() || attrs.name : 'Unnamed Test',
+                    description: attrs.description || (attrs.name || 'Unnamed Test'),
                     result: testResult,
-                    duration: parseFloat(testCase.time) || 0,
+                    duration: parseFloat(attrs.time) || 0,
                     context: [...currentContext]
                 };
                 
@@ -352,23 +351,25 @@ function processTestResults(xmlData) {
                 const testCases = Array.isArray(obj['test-case']) 
                     ? obj['test-case'] 
                     : [obj['test-case']];
-                
-                testCases.forEach(testCase => {
+                  testCases.forEach(testCase => {
+                    // Get attributes from $ property
+                    const attrs = testCase.$ || {};
+                    
                     // Determine the test result - use success attribute or result
                     let testResult = 'Unknown';
-                    if (testCase.success === 'True') {
+                    if (attrs.success === 'True') {
                         testResult = 'Success';
-                    } else if (testCase.success === 'False') {
+                    } else if (attrs.success === 'False') {
                         testResult = 'Failure';
                     } else {
-                        testResult = testCase.result || 'Unknown';
+                        testResult = attrs.result || 'Unknown';
                     }
                     
                     const test = {
-                        name: testCase.name ? testCase.name.split('.').pop() || testCase.name : 'Unnamed Test',
-                        description: testCase.description || (testCase.name || 'Unnamed Test'),
+                        name: attrs.name ? attrs.name.split('.').pop() || attrs.name : 'Unnamed Test',
+                        description: attrs.description || (attrs.name || 'Unnamed Test'),
                         result: testResult,
-                        duration: parseFloat(testCase.time) || 0,
+                        duration: parseFloat(attrs.time) || 0,
                         context: [...context]
                     };
                     
@@ -379,12 +380,11 @@ function processTestResults(xmlData) {
             // Recursively search for test cases in nested objects
             if (typeof obj === 'object') {
                 for (const key in obj) {
-                    if (typeof obj[key] === 'object' && obj[key] !== null) {
-                        // If we're in a test-suite, add its name to the context
+                    if (typeof obj[key] === 'object' && obj[key] !== null) {                        // If we're in a test-suite, add its name to the context
                         const newContext = [...context];
-                        if (key === 'test-suite' && obj[key].name && 
-                            obj[key].name !== 'Pester' && !obj[key].name.startsWith('C:\\')) {
-                            newContext.push(obj[key].name);
+                        if (key === 'test-suite' && obj[key].$ && obj[key].$.name && 
+                            obj[key].$.name !== 'Pester' && !obj[key].$.name.startsWith('C:\\')) {
+                            newContext.push(obj[key].$.name);
                         }
                         findAllTestCases(obj[key], newContext);
                     }
