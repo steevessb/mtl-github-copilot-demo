@@ -234,10 +234,11 @@ if (-not $SkipTests) {
     Write-Host "Step 2: Running tests against local simulators..." -ForegroundColor Green
     
     # Create timestamp for test result files
-    $timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
-      # Determine test files to run
+    $timestamp = Get-Date -Format "yyyyMMdd-HHmmss"    # Determine test files to run
     $testFiles = @(
-        "SimpleStorageSimulatorTests.ps1"
+        "SimpleStorageSimulatorTests.ps1",
+        "KeyVaultSimulatorTests.ps1",
+        "NetworkSimulatorTests.ps1"
     )
     
     # Run each test file

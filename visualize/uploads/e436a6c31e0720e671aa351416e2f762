@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<test-results xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="nunit_schema_2.5.xsd" name="Pester" total="0" errors="0" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2025-05-13" time="16:19:26">
+  <environment clr-version="Unknown" user-domain="2D" machine-name="5CG3032D8Y" nunit-version="2.5.8.0" platform="Microsoft Windows 11 Enterprise|C:\windows|\Device\Harddisk0\Partition3" os-version="10.0.22621" cwd="C:\Users\steeves.saillant\source\mtl-github-copilot-demo" user="steeves.saillant" />
+  <culture-info current-culture="en-CA" current-uiculture="en-US" />
+  <test-suite type="TestFixture" name="Pester" executed="True" result="Success" success="True" time="0.0012" asserts="0" description="Pester">
+    <results />
+  </test-suite>
+</test-results>

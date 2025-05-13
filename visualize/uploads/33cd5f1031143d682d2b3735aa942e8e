@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<test-results xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="nunit_schema_2.5.xsd" name="Pester" total="10" errors="0" failures="10" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2025-05-13" time="16:23:29">
+  <environment clr-version="Unknown" user-domain="2D" machine-name="5CG3032D8Y" nunit-version="2.5.8.0" platform="Microsoft Windows 11 Enterprise|C:\windows|\Device\Harddisk0\Partition3" os-version="10.0.22621" cwd="C:\Users\steeves.saillant\source\mtl-github-copilot-demo" user="steeves.saillant" />
+  <culture-info current-culture="en-CA" current-uiculture="en-US" />
+  <test-suite type="TestFixture" name="Pester" executed="True" result="Failure" success="False" time="0.1544" asserts="0" description="Pester">
+    <results>
+      <test-suite type="TestFixture" name="C:\Users\steeves.saillant\source\mtl-github-copilot-demo\tests\NetworkSimulatorTests.ps1" executed="True" result="Failure" success="False" time="0.1544" asserts="0" description="C:\Users\steeves.saillant\source\mtl-github-copilot-demo\tests\NetworkSimulatorTests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="Virtual Network Tests with Local Simulator" executed="True" result="Failure" success="False" time="0.0415" asserts="0" description="Virtual Network Tests with Local Simulator">
+            <results>
+              <test-suite type="TestFixture" name="Virtual Network Tests with Local Simulator.Virtual Network 1 Validation" executed="True" result="Failure" success="False" time="0" asserts="0" description="Virtual Network Tests with Local Simulator.Virtual Network 1 Validation">
+                <results>
+                  <test-case description="Should have the correct name" name="Virtual Network Tests with Local Simulator.Virtual Network 1 Validation.Should have the correct name" time="0" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>This test should run but it did not. Most likely a setup in some parent block failed.</message>
+                      <stack-trace />
+                    </failure>
+                  </test-case>
+                  <test-case description="Should be in East US region" name="Virtual Network Tests with Local Simulator.Virtual Network 1 Validation.Should be in East US region" time="0" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>This test should run but it did not. Most likely a setup in some parent block failed.</message>
+                      <stack-trace />
+                    </failure>
+                  </test-case>
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Virtual Network Tests with Local Simulator.Virtual Network 2 Validation" executed="True" result="Failure" success="False" time="0" asserts="0" description="Virtual Network Tests with Local Simulator.Virtual Network 2 Validation">
+                <results>
+                  <test-case description="Should have the correct name" name="Virtual Network Tests with Local Simulator.Virtual Network 2 Validation.Should have the correct name" time="0" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>This test should run but it did not. Most likely a setup in some parent block failed.</message>
+                      <stack-trace />
+                    </failure>
+                  </test-case>
+                  <test-case description="Should be in Canada East region" name="Virtual Network Tests with Local Simulator.Virtual Network 2 Validation.Should be in Canada East region" time="0" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>This test should run but it did not. Most likely a setup in some parent block failed.</message>
+                      <stack-trace />
+                    </failure>
+                  </test-case>
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+          <test-suite type="TestFixture" name="Subnet Tests with Local Simulator" executed="True" result="Failure" success="False" time="0.0773" asserts="0" description="Subnet Tests with Local Simulator">
+            <results>
+              <test-suite type="TestFixture" name="Subnet Tests with Local Simulator.Subnet Validation" executed="True" result="Failure" success="False" time="0" asserts="0" description="Subnet Tests with Local Simulator.Subnet Validation">
+                <results>
+                  <test-case description="Should have correct subnet1 name" name="Subnet Tests with Local Simulator.Subnet Validation.Should have correct subnet1 name" time="0" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>This test should run but it did not. Most likely a setup in some parent block failed.</message>
+                      <stack-trace />
+                    </failure>
+                  </test-case>
+                  <test-case description="Should have correct subnet2 name" name="Subnet Tests with Local Simulator.Subnet Validation.Should have correct subnet2 name" time="0" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>This test should run but it did not. Most likely a setup in some parent block failed.</message>
+                      <stack-trace />
+                    </failure>
+                  </test-case>
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+          <test-suite type="TestFixture" name="Network Security Group Tests with Local Simulator" executed="True" result="Failure" success="False" time="0.1158" asserts="0" description="Network Security Group Tests with Local Simulator">
+            <results>
+              <test-suite type="TestFixture" name="Network Security Group Tests with Local Simulator.Network Security Group Validation" executed="True" result="Failure" success="False" time="0" asserts="0" description="Network Security Group Tests with Local Simulator.Network Security Group Validation">
+                <results>
+                  <test-case description="Should have correct NSG1 name" name="Network Security Group Tests with Local Simulator.Network Security Group Validation.Should have correct NSG1 name" time="0" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>This test should run but it did not. Most likely a setup in some parent block failed.</message>
+                      <stack-trace />
+                    </failure>
+                  </test-case>
+                  <test-case description="Should have correct NSG2 name" name="Network Security Group Tests with Local Simulator.Network Security Group Validation.Should have correct NSG2 name" time="0" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>This test should run but it did not. Most likely a setup in some parent block failed.</message>
+                      <stack-trace />
+                    </failure>
+                  </test-case>
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Network Security Group Tests with Local Simulator.NSG Rules Validation" executed="True" result="Failure" success="False" time="0" asserts="0" description="Network Security Group Tests with Local Simulator.NSG Rules Validation">
+                <results>
+                  <test-case description="Should have rule1 configured" name="Network Security Group Tests with Local Simulator.NSG Rules Validation.Should have rule1 configured" time="0" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>This test should run but it did not. Most likely a setup in some parent block failed.</message>
+                      <stack-trace />
+                    </failure>
+                  </test-case>
+                  <test-case description="Should have rule2 configured" name="Network Security Group Tests with Local Simulator.NSG Rules Validation.Should have rule2 configured" time="0" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>This test should run but it did not. Most likely a setup in some parent block failed.</message>
+                      <stack-trace />
+                    </failure>
+                  </test-case>
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+    </results>
+  </test-suite>
+</test-results>
