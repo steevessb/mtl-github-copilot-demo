@@ -1,0 +1,259 @@
+/* public/css/styles.css */
+:root {
+    --primary-color: #0078d4; /* Azure blue */
+    --secondary-color: #50e6ff;
+    --background-color: #f8f9fa;
+    --text-color: #333;
+    --passed-color: #4bc45c;
+    --failed-color: #ff6384;
+    --skipped-color: #c9cbcf;
+    --border-color: #dee2e6;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--background-color);
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+header {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 2rem 0;
+    margin-bottom: 2rem;
+}
+
+header h1 {
+    margin-bottom: 0.5rem;
+}
+
+h1, h2, h3 {
+    margin-bottom: 1rem;
+}
+
+section {
+    margin-bottom: 2.5rem;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+}
+
+.btn {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: background-color 0.3s;
+}
+
+.btn:hover {
+    background-color: #005a9e;
+}
+
+.btn-back {
+    background-color: #6c757d;
+    margin-top: 1rem;
+}
+
+.btn-back:hover {
+    background-color: #5a6268;
+}
+
+.btn-view {
+    background-color: var(--primary-color);
+    padding: 0.3rem 0.8rem;
+    font-size: 0.8rem;
+}
+
+.btn-azure {
+    background-color: #0078d4;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+input[type="file"] {
+    display: block;
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+}
+
+/* Tables */
+.reports-table,
+.test-cases-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+.reports-table th,
+.reports-table td,
+.test-cases-table th,
+.test-cases-table td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.reports-table th,
+.test-cases-table th {
+    background-color: #f1f3f5;
+    font-weight: 600;
+}
+
+.reports-table tr:hover,
+.test-cases-table tr:hover {
+    background-color: #f8f9fa;
+}
+
+/* Status colors */
+.passed, .success {
+    color: var(--passed-color);
+}
+
+.failed, .failure {
+    color: var(--failed-color);
+}
+
+.skipped {
+    color: var(--skipped-color);
+}
+
+/* Statistics */
+.summary-stats {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+}
+
+.stat {
+    flex: 1;
+    padding: 1rem;
+    text-align: center;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    margin: 0 0.5rem;
+}
+
+.stat-value {
+    display: block;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+}
+
+.stat.total {
+    background-color: #f8f9fa;
+}
+
+.stat.passed {
+    background-color: rgba(75, 192, 92, 0.1);
+    border-color: var(--passed-color);
+}
+
+.stat.failed {
+    background-color: rgba(255, 99, 132, 0.1);
+    border-color: var(--failed-color);
+}
+
+.stat.skipped {
+    background-color: rgba(201, 203, 207, 0.1);
+    border-color: var(--skipped-color);
+}
+
+/* Charts */
+.charts-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 0 -0.5rem;
+}
+
+.chart-wrapper {
+    flex: 1;
+    min-width: 300px;
+    margin: 0.5rem;
+    padding: 1rem;
+    background-color: white;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.chart-wrapper h3 {
+    text-align: center;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+}
+
+/* Filter controls */
+.filter-controls {
+    display: flex;
+    margin-bottom: 1rem;
+}
+
+.filter-controls select {
+    padding: 0.5rem;
+    margin-right: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 1.5rem 0;
+    background-color: #f1f3f5;
+    margin-top: 2rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .summary-stats {
+        flex-direction: column;
+    }
+    
+    .stat {
+        margin: 0.5rem 0;
+    }
+    
+    .charts-container {
+        flex-direction: column;
+    }
+    
+    .chart-wrapper {
+        min-width: 100%;
+    }
+}

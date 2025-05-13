@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<test-results xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="nunit_schema_2.5.xsd" name="Pester" total="9" errors="0" failures="0" not-run="6" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2025-05-13" time="14:25:43">
+  <environment user="steeves.saillant" machine-name="5CG3032D8Y" user-domain="2D" os-version="10.0.22621" nunit-version="2.5.8.0" clr-version="Unknown" platform="Microsoft Windows 11 Enterprise|C:\windows|\Device\Harddisk0\Partition3" cwd="C:\Users\steeves.saillant\source\mtl-github-copilot-demo" />
+  <culture-info current-culture="en-CA" current-uiculture="en-US" />
+  <test-suite type="TestFixture" name="Pester" executed="True" result="Success" success="True" time="3.1891" asserts="0" description="Pester">
+    <results>
+      <test-suite type="TestFixture" name="C:\Users\steeves.saillant\source\mtl-github-copilot-demo\src\Security.Tests.ps1" executed="True" result="Success" success="True" time="3.0352" asserts="0" description="C:\Users\steeves.saillant\source\mtl-github-copilot-demo\src\Security.Tests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="Azure Security Compliance Tests" executed="True" result="Success" success="True" time="2.6823" asserts="0" description="Azure Security Compliance Tests">
+            <results>
+              <test-suite type="TestFixture" name="Azure Security Compliance Tests.Storage Account Security" executed="True" result="Success" success="True" time="0.138" asserts="0" description="Azure Security Compliance Tests.Storage Account Security">
+                <results>
+                  <test-case description="All Storage Accounts should have HTTPS-only enabled" name="Azure Security Compliance Tests.Storage Account Security.All Storage Accounts should have HTTPS-only enabled" time="0.0934" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="All Storage Accounts should have minimum TLS 1.2" name="Azure Security Compliance Tests.Storage Account Security.All Storage Accounts should have minimum TLS 1.2" time="0.0047" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="All Storage Accounts should have Blob Public Access disabled" name="Azure Security Compliance Tests.Storage Account Security.All Storage Accounts should have Blob Public Access disabled" time="0.0051" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Azure Security Compliance Tests.Key Vault Security" executed="True" result="Success" success="True" time="0.1538" asserts="0" description="Azure Security Compliance Tests.Key Vault Security">
+                <results>
+                  <test-case description="All Key Vaults should have Soft Delete enabled" name="Azure Security Compliance Tests.Key Vault Security.All Key Vaults should have Soft Delete enabled" time="0.0068" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="All Key Vaults should have Purge Protection enabled in Production" name="Azure Security Compliance Tests.Key Vault Security.All Key Vaults should have Purge Protection enabled in Production" time="0.0053" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Azure Security Compliance Tests.Web App Security" executed="True" result="Success" success="True" time="0.169" asserts="0" description="Azure Security Compliance Tests.Web App Security">
+                <results>
+                  <test-case description="All Web Apps should have HTTPS-only enabled" name="Azure Security Compliance Tests.Web App Security.All Web Apps should have HTTPS-only enabled" time="0.0062" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="All Web Apps should use minimum TLS 1.2" name="Azure Security Compliance Tests.Web App Security.All Web Apps should use minimum TLS 1.2" time="0.0057" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Azure Security Compliance Tests.SQL Server Security" executed="True" result="Success" success="True" time="0.1994" asserts="0" description="Azure Security Compliance Tests.SQL Server Security">
+                <results>
+                  <test-case description="All SQL Servers should have Azure AD authentication enabled" name="Azure Security Compliance Tests.SQL Server Security.All SQL Servers should have Azure AD authentication enabled" time="0.0076" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="All SQL Servers should have Auditing enabled" name="Azure Security Compliance Tests.SQL Server Security.All SQL Servers should have Auditing enabled" time="0.0081" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+    </results>
+  </test-suite>
+</test-results>

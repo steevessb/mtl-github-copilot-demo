@@ -1,0 +1,74 @@
+<!-- views/index.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Azure QA Test Visualizer</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Azure QA Test Visualizer</h1>
+            <p>Visualize your Pester test results with beautiful charts</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="upload-section">
+            <h2>Upload Test Results</h2>
+            <form action="/upload" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="testResults">Test Results XML File (NUnit format)</label>
+                    <input type="file" id="testResults" name="testResults" accept=".xml" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Upload and Visualize</button>
+            </form>
+        </section>
+
+        <section class="reports-section">
+            <h2>Recent Reports</h2>
+            <% if (reports && reports.length > 0) { %>
+                <table class="reports-table">
+                    <thead>
+                        <tr>
+                            <th>Report Name</th>
+                            <th>Date</th>
+                            <th>Pass</th>
+                            <th>Fail</th>
+                            <th>Skip</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% reports.forEach(report => { %>
+                            <tr>
+                                <td><%= report.name %></td>
+                                <td><%= new Date(report.date).toLocaleString() %></td>
+                                <td class="passed"><%= report.passed %></td>
+                                <td class="failed"><%= report.failed %></td>
+                                <td class="skipped"><%= report.skipped %></td>
+                                <td>
+                                    <a href="/report/<%= report.id %>" class="btn btn-view">View</a>
+                                </td>
+                            </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+            <% } else { %>
+                <div class="no-reports">
+                    <p>No reports available. Upload your test results to get started.</p>
+                </div>
+            <% } %>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; <%= new Date().getFullYear() %> Azure QA Test Visualizer</p>
+        </div>
+    </footer>
+</body>
+</html>

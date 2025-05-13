@@ -1,14 +1,43 @@
-ARCHITECTURE & SLIDE CONTENT SUMMARY
+AZURE QA AUTOMATION ARCHITECTURE
 
-1. Data-driven Pester tests using arrays/hashtables for fixtures
-2. Centralized Azure queries in DiscoveryPhase.ps1 (BeforeDiscovery event)
-3. Fixtures compare expected vs actual cloud state at runtime
-4. Use AI (Copilot) to generate fixtures and assertion functions
-5. Reporting: Console, Azure DevOps, Xray Jira
-6. BDD-style (Describe/It) for test organization
-7. Sprint 0 for POC/spikes, iterate with BDD
-8. Link Jira issues to test plans, 1 execution per story/issue
-9. Do not create bug issues for all test failures—wait for sprint completion
-10. Avoid code repetition, use Git for test code
+1. DATA-DRIVEN TESTING WITH PESTER
+   - Use YAML fixtures (config/AzureFixtures.yml) to define expected resource configurations
+   - Leverage PowerShell hashtables and arrays for test fixtures
+   - Centralize Azure queries in DiscoveryPhase.ps1 with BeforeDiscovery event
+   - Test fixtures compare expected vs actual cloud state at runtime
+   - Use wildcards and dynamic replacements for flexible matching
 
-Use this file as a reference for new slides or presentations.
+2. AZURE RESOURCE TESTING COMPONENTS
+   - Storage Accounts: Validate existence, settings, security, and compliance
+   - Resource Groups: Verify tags, locations, and resource locks
+   - Security: Validate TLS versions, secure access, encryption, and compliance
+   - Network: Test NSG rules, VNETs, and connectivity requirements
+
+3. CI/CD INTEGRATION
+   - Azure DevOps Pipeline with AzurePowerShell tasks
+   - Secure authentication with service connections or managed identities
+   - Staged test execution (unit, integration, compliance)
+   - Test result reporting to Azure DevOps and Xray Jira
+
+4. BEST PRACTICES FOR QUALITY ENGINEERS
+   - Use BDD-style (Describe/It) for test organization
+   - Start with Sprint 0 for POC/spikes, then iterate with BDD
+   - Link Jira issues to test plans (1 execution per story/issue)
+   - Wait for sprint completion before creating bug issues for test failures
+   - Avoid code repetition, use Git for test code
+   - Leverage GitHub Copilot for generating test fixtures and assertions
+
+5. AZURE SECURITY BEST PRACTICES IN TESTS
+   - Validate HTTPS-only configuration
+   - Verify minimum TLS 1.2 enforcement
+   - Test for proper encryption at rest and in transit
+   - Confirm security defaults are enabled
+   - Check for proper Azure AD integration
+
+6. REPORTING OPTIONS
+   - Console output for local development
+   - NUnit XML for Azure DevOps integration
+   - Custom exports for Xray Jira integration
+   - Compliance dashboards for security validation
+
+Use this file as a reference for creating new slides or presentations.

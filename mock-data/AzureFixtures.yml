@@ -1,0 +1,80 @@
+# AzureFixtures.yml
+# YAML configuration for test fixtures
+# Quality Engineer: Customize these values to match your environment specifications
+
+# Storage Account configurations
+storageAccounts:
+  - name: "storage1"
+    type: "StorageV2"
+    sku: "Standard_LRS"
+    location: "eastus"
+    minTlsVersion: "TLS1_2"
+    supportsHttpsTrafficOnly: true
+    allowBlobPublicAccess: false
+    tags:
+      - Environment: "QA"
+      - Owner: "QA Team"
+      - CostCenter: "12345"
+
+  - name: "storage2"
+    type: "StorageV2"
+    sku: "Standard_ZRS"
+    location: "canadaeast"
+    minTlsVersion: "TLS1_2"
+    supportsHttpsTrafficOnly: true
+    allowBlobPublicAccess: false
+    tags:
+      - Environment: "Prod"
+      - Owner: "Operations"
+      - CostCenter: "67890"
+
+# Resource Group configurations
+resourceGroups:
+  - name: "qa-test-rg"
+    location: "canadaeast"
+    tags:
+      - Environment: "QA"
+      - Owner: "QA Team"
+      - CostCenter: "12345"
+    resources:
+      - type: "Microsoft.Storage/storageAccounts"
+        name: "storage1"
+      - type: "Microsoft.Web/serverFarms"
+        name: "appplan1"
+
+  - name: "prod-rg"
+    location: "canadaeast"
+    tags:
+      - Environment: "Production"
+      - Owner: "Operations"
+      - CostCenter: "67890"
+    resources:
+      - type: "Microsoft.Storage/storageAccounts"
+        name: "storage2"
+      - type: "Microsoft.Web/sites"
+        name: "webapp1"
+
+# Network Security Group configurations
+networkSecurityGroups:
+  - name: "test-nsg"
+    location: "canadaeast"
+    resourceGroup: "qa-test-rg"
+    rules:
+      - name: "allow-https"
+        priority: 100
+        direction: "Inbound"
+        access: "Allow"
+        protocol: "Tcp"
+        sourcePortRange: "*"
+        destinationPortRange: "443"
+        sourceAddressPrefix: "*"
+        destinationAddressPrefix: "*"
+      - name: "deny-all"
+        priority: 4096
+        direction: "Inbound"
+        access: "Deny"
+        protocol: "*"
+        sourcePortRange: "*"
+        destinationPortRange: "*"
+        sourceAddressPrefix: "*"
+        destinationAddressPrefix: "*"
