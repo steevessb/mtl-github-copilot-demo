@@ -1,0 +1,38 @@
+{
+  "vnet2Name": {
+    "value": "vnet2"
+  },
+  "storage2Name": {
+    "value": "storage2"
+  },
+  "privateDns2Name": {
+    "value": "privatedns2.azure.com"
+  },
+  "subnet2Name": {
+    "value": "subnet2"
+  },
+  "keyVault1Name": {
+    "value": "kv1"
+  },
+  "subnet1Name": {
+    "value": "subnet1"
+  },
+  "nsg2Name": {
+    "value": "nsg2"
+  },
+  "vnet1Name": {
+    "value": "vnet1"
+  },
+  "nsg1Name": {
+    "value": "nsg1"
+  },
+  "keyVault2Name": {
+    "value": "kv2"
+  },
+  "storage1Name": {
+    "value": "storage1"
+  },
+  "privateDns1Name": {
+    "value": "privatedns1.azure.com"
+  }
+}
